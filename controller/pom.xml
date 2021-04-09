@@ -41,6 +41,9 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <containerName>impl1</containerName>
+            </properties>
             <dependencies>
                 <dependency>
                     <groupId>de.cwansart</groupId>
@@ -51,6 +54,9 @@
         </profile>
         <profile>
             <id>impl2</id>
+            <properties>
+                <containerName>impl2</containerName>
+            </properties>
             <dependencies>
                 <dependency>
                     <groupId>de.cwansart</groupId>
@@ -58,6 +64,42 @@
                     <version>1.0-SNAPSHOT</version>
                 </dependency>
             </dependencies>
+        </profile>
+        <profile>
+            <id>build</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.34.1</version>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>${containerName}</name>
+
+                                    <build>
+                                        <from>payara/server-full:5.2021.2-jdk11</from>
+                                        <assembly>
+                                            <descriptorRef>artifact</descriptorRef>
+                                            <targetDir>/opt/payara/deployments</targetDir>
+                                        </assembly>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build-container</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>

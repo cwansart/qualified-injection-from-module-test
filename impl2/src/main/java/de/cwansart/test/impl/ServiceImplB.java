@@ -8,6 +8,6 @@ public class ServiceImplB implements Service {
 
     @Override
     public String getServiceName() {
-        return "Service 2B";
+        return "Service Impl2 B";
     }
 }
